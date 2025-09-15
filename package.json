@@ -1,0 +1,25 @@
+{
+    "name": "uhale",
+    "version": "0.0.0",
+    "description": "",
+    "homepage": "https://github.com/vrumger/uhale#readme",
+    "bugs": {
+        "url": "https://github.com/vrumger/uhale/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vrumger/uhale.git"
+    },
+    "license": "MIT",
+    "author": "Avrumy",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "@types/node": "^24.5.2",
+        "typescript": "^5.9.2"
+    }
+}
