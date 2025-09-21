@@ -1,7 +1,7 @@
 {
     "name": "uhale",
     "version": "1.0.0",
-    "description": "",
+    "description": "A TypeScript/JavaScript library for interacting with the Uhale API, providing functionality for file uploads, user authentication, and terminal management.",
     "homepage": "https://github.com/vrumger/uhale#readme",
     "bugs": {
         "url": "https://github.com/vrumger/uhale/issues"
@@ -13,7 +13,7 @@
     "license": "MIT",
     "author": "Avrumy",
     "type": "module",
-    "main": "index.js",
+    "main": "lib/index.js",
     "scripts": {
         "build": "tsc",
         "test": "tsc --noEmit"
