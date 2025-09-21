@@ -60,3 +60,24 @@ export type UhalePresignedUrl = {
     fileUrl: string;
     fileId: string;
 };
+
+export enum UhaleSessionIdState {
+    LoggedOut = 'loggedOut',
+    Scanned = 'scanned',
+    LoggedIn = 'loggedIn',
+    Failed = 'failed',
+    Expired = 'expired',
+    Unknown = 'unknown',
+}
+
+export enum UhaleFileUploadState {
+    Pending = 'pending',
+    Uploaded = 'uploaded',
+    Unknown = 'unknown',
+}
+
+export enum UhaleFileRevokeState {
+    Pending = 'pending',
+    Revoked = 'revoked',
+    Unknown = 'unknown',
+}

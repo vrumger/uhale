@@ -1,12 +1,15 @@
 import { createHmac, randomUUID } from 'node:crypto';
-import type {
-    UhaleLogin,
-    UhaleOptions,
-    UhalePresignedUrl,
-    UhaleResponse,
-    UhaleTerminal,
-    UhaleUser,
-} from './types.ts';
+import {
+    UhaleFileRevokeState,
+    UhaleFileUploadState,
+    type UhaleLogin,
+    type UhaleOptions,
+    type UhalePresignedUrl,
+    type UhaleResponse,
+    UhaleSessionIdState,
+    type UhaleTerminal,
+    type UhaleUser,
+} from './types.js';
 
 export class Uhale {
     private apiUrl: string;
@@ -72,14 +75,14 @@ export class Uhale {
         );
 
         const states = {
-            0: 'loggedOut',
-            1: 'scanned',
-            2: 'loggedIn',
-            3: 'failed',
-            4: 'expired',
+            0: UhaleSessionIdState.LoggedOut,
+            1: UhaleSessionIdState.Scanned,
+            2: UhaleSessionIdState.LoggedIn,
+            3: UhaleSessionIdState.Failed,
+            4: UhaleSessionIdState.Expired,
         };
 
-        return states[data] ?? 'unknown';
+        return states[data] ?? UhaleSessionIdState.Unknown;
     }
 
     private _generateSignedToken(path: string) {
@@ -137,12 +140,12 @@ export class Uhale {
 
                     const sessionIdState = await this.getSessionIdState();
 
-                    if (sessionIdState === 'loggedIn') {
+                    if (sessionIdState === UhaleSessionIdState.LoggedIn) {
                         clearInterval(interval);
                         resolve(null);
                     } else if (
-                        sessionIdState === 'failed' ||
-                        sessionIdState === 'expired'
+                        sessionIdState === UhaleSessionIdState.Failed ||
+                        sessionIdState === UhaleSessionIdState.Expired
                     ) {
                         clearInterval(interval);
                         reject(new Error(`Login ${sessionIdState}`));
@@ -223,7 +226,9 @@ export class Uhale {
         });
     }
 
-    private async _getFileState(fileIds: string[]) {
+    private async _getFileState(
+        fileIds: string[],
+    ): Promise<[string, UhaleFileUploadState][]> {
         if (!this.sessionId) {
             throw new Error('no session id');
         }
@@ -241,14 +246,14 @@ export class Uhale {
         );
 
         const states = {
-            1: 'pending',
-            2: 'uploaded', // image
-            3: 'uploaded', // video
+            1: UhaleFileUploadState.Pending,
+            2: UhaleFileUploadState.Uploaded, // image
+            3: UhaleFileUploadState.Uploaded, // video
         };
 
         return Object.entries(data).map(([fileId, fileState]) => [
             fileId,
-            states[fileState] ?? fileState ?? 'unknown',
+            states[fileState] ?? fileState ?? UhaleFileUploadState.Unknown,
         ]);
     }
 
@@ -264,7 +269,8 @@ export class Uhale {
 
                     if (
                         fileStates.every(
-                            ([_fileId, fileState]) => fileState === 'uploaded',
+                            ([_fileId, fileState]) =>
+                                fileState === UhaleFileUploadState.Uploaded,
                         )
                     ) {
                         clearInterval(interval);
@@ -358,13 +364,13 @@ export class Uhale {
         );
 
         const states = {
-            1: 'pending',
-            2: 'revoked',
+            1: UhaleFileRevokeState.Pending,
+            2: UhaleFileRevokeState.Revoked,
         };
 
         return Object.entries(data).map(([fileId, fileState]) => [
             fileId,
-            states[fileState] ?? 'unknown',
+            states[fileState] ?? UhaleFileRevokeState.Unknown,
         ]);
     }
 
@@ -380,7 +386,8 @@ export class Uhale {
 
                     if (
                         fileStates.every(
-                            ([_fileId, fileState]) => fileState === 'revoked',
+                            ([_fileId, fileState]) =>
+                                fileState === UhaleFileRevokeState.Revoked,
                         )
                     ) {
                         clearInterval(interval);
