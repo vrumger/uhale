@@ -15,6 +15,7 @@
     "type": "module",
     "main": "lib/index.js",
     "scripts": {
+        "prepare": "npm run build",
         "build": "tsc",
         "test": "tsc --noEmit"
     },
