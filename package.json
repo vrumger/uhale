@@ -1,6 +1,6 @@
 {
     "name": "uhale",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "A TypeScript/JavaScript library for interacting with the Uhale API, providing functionality for file uploads, user authentication, and terminal management.",
     "homepage": "https://github.com/vrumger/uhale#readme",
     "bugs": {
